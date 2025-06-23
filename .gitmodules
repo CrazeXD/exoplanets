@@ -1,0 +1,3 @@
+[submodule "Prometheus"]
+	path = Prometheus
+	url = https://github.com/CrazeXD/Prometheus
