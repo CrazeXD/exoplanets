@@ -8,14 +8,12 @@ import numpy as np
 import pandas as pd
 import rebound
 import os
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.colors as col
 import hsluv
 import scipy.special
 from matplotlib.widgets import Slider
 from datetime import datetime, timezone
-from barycorr import barycorrPy
 from astropy.time import Time
 from astropy.utils.iers import conf
 conf.auto_download = False
@@ -297,18 +295,18 @@ class TimingModel:
 
         df_columns = ['a [R_P]', 'T [hr]'] + [f'Phase of date {dates[i]}' for i in range(len(dates_timediff))]
         df = pd.DataFrame(solutions_concat, columns=df_columns)
-        df.to_excel('timings.xlsx', index=False)
+        df.to_csv('timings.csv', index=False)
 
 #2024-12-03, 2025-02-19
 if __name__ == "__main__":
  #   dates = ["2015-12-07 04:31:00", "2016-01-01 05:22:00", "2019-11-11 13:32:00", "2020-12-16 03:14:00", "2024-02-05 05:03:00"]
 #    dates = ["2015-12-07 04:31:00", "2016-01-01 05:22:00", "2019-11-11 13:32:00", "2020-12-16 03:14:00", "2024-11-20 12:16:00"]
     dates = ["2015-12-07 04:31:00", "2016-01-01 05:22:00", "2019-11-11 13:32:00", "2020-12-16 03:14:00", "2024-12-04 10:04:00", "2025-02-20 07:24:00", "2025-11-25 11:34:00", "2026-01-17 08:02:00"]
-    fix_date_phase = ("2019-11-11 13:32:00", 0.0)   # This will be fixed directly.
+    fix_date_phase = ("2019-11-11 13:32:00", 0.0)   # This will be fixed directly. # Might be slightly larger phase.
     tm = TimingModel(fix_date_phase) 
     tm.set_approximate_phases("2016-01-15 03:11:00", 0.1)
     tm.set_approximate_phases("2016-01-01 05:22:00", 0.7)
     tm.set_approximate_phases("2020-12-16 03:11:00", 0.1) #0.6
     tm.search_orbitsolution(additional_dates=dates, error_threshold=3e-5)   # Low error_threshold fixes the phases passed in previous line.
-    tm.semimajoraxis_sliderplot(dates + ["2016-01-15 03:11:00"], mark_orbitsolutions=True)
+    tm.semimajoraxis_sliderplot(dates + ["2016-01-15 03:11:00"], mark_orbitsolutions=True) # Theory counters to the fix_date_phase
 # "2021-01-07 09:21:00"
